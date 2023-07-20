@@ -1,0 +1,19 @@
+<a
+  style="cursor: pointer; margin-bottom: -1px;"
+  routerLinkActive="active"
+  [routerLink]="['/bikes', index]"
+  [skipLocationChange]= "true"
+  class="list-group-item clearfix">
+  <div class="pull-left">
+    <h4 class="list-group-item-heading">{{ bike.name }}</h4>
+    <p class="list-group-item-text">{{ bike.price | currency }}</p>
+  </div>
+  <span class="pull-right">
+    <img
+      [src]="bike.imagePath"
+      alt="{{ bike.name }}"
+      class="img-responsive"
+      style="max-height: 50px;">
+  </span>
+</a>
+

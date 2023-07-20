@@ -1,0 +1,9 @@
+.btn-default{
+  background-color: #e7e7e7;
+  border-color: #e7e7e7 !important;
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border: 1px solid rgb(224, 98, 98);
+}

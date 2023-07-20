@@ -1,0 +1,13 @@
+#bike-list{
+  margin-bottom: 10px;
+}
+
+.btn-default{
+  background-color: #e7e7e7;
+  border-color: #e7e7e7 !important;
+}
+.information{
+  margin-top: 0 !important;
+  margin-bottom: 20px !important;
+  color:rgb(75, 75, 181)
+}
