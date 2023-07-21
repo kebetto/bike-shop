@@ -1,9 +1,14 @@
-<!-- <ng-template appPlaceholder></ng-template> -->
 <div class="row">
   <div class="col-xs-12 col-md-6 col-md-offset-3">
-    <!-- <div *ngIf="isLoading" style="text-align: center;">
-      <app-loading-spinner></app-loading-spinner>
-    </div> -->
+    <div *ngIf="isLoading || error">
+      <div *ngIf="isLoading" style="text-align: center;">
+        <app-loading-spinner />
+      </div>
+      <div *ngIf="error" class="alert alert-danger" style="text-align: center;">
+        Un error occurred while logging in
+      </div>
+    </div>
+
     <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
       <div class="form-group">
         <label for="email">E-Mail</label>
@@ -16,6 +21,7 @@
           required
           email
           #email="ngModel"
+          (focus)="error = null"
         />
         <div *ngIf="email.touched && email.invalid" class="alert alert-danger">
           <div *ngIf="email.errors?.['required']">Email is required</div>
@@ -33,6 +39,7 @@
           required
           minlength="6"
           #password="ngModel"
+          (focus)="error = null"
         />
         <div *ngIf="password.touched && password.invalid" class="alert alert-danger">
           <div *ngIf="password.errors?.['required']">Password is required</div>
@@ -45,11 +52,7 @@
           type="submit"
           [disabled]="!authForm.valid"
         >
-          {{ isLoginMode ? 'Login' : 'Sign Up' }}
-        </button>
-        |
-        <button class="btn btn-primary" (click)="this.isLoginMode = !this.isLoginMode" type="button">
-          Switch to {{ isLoginMode ? 'Sign Up' : 'Login' }}
+          Login
         </button>
       </div>
     </form>

@@ -17,7 +17,7 @@ export class HeaderComponent {
   collapsed = true;
   destroy$ = new Subject<void>();
 
-  constructor(private dataService: DataStorageService, private bikeService: BikeService, private router: Router){}
+  constructor(private bikeService: BikeService, private router: Router){}
 
   onDataSave(){
     const bikes = this.bikeService.getBikes();
@@ -27,6 +27,7 @@ export class HeaderComponent {
 
   onDataFetch(){
     this.bikeService.fetchBikes().subscribe();
+    this.bikeService.errorOccurred.next(false);
     this.router.navigate(['/']);
   }
 }

@@ -34,4 +34,10 @@ export class BikeDetailComponent implements OnInit {
   onEdit(){
     this.router.navigate(['/bikes', this.id, 'edit']);
   }
+
+  onDelete(){
+    const proceed = confirm("Do you want to permanently delete this item");
+    if (proceed) this.bikeService.deleteBike(this.id);
+    else return;
+  }
 }

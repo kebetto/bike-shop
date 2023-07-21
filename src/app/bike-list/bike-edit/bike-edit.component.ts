@@ -5,11 +5,12 @@ import { Bike } from '../bike.model';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { BikeService } from 'src/app/services/bike.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { LoadingSpinnerComponent } from 'src/app/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-bike-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent],
   templateUrl: './bike-edit.component.html',
   styleUrls: ['./bike-edit.component.css']
 })
@@ -18,6 +19,7 @@ export class BikeEditComponent implements OnInit{
   bike!: Bike;
   id! : number;
   onEditMode = false;
+  isSaving = false;
 
   constructor(private bikeService: BikeService, private router: Router, private route: ActivatedRoute){}
 
@@ -46,6 +48,8 @@ export class BikeEditComponent implements OnInit{
    }
 
    onSubmit(){
+    this.isSaving = true;
+
     const bike = new Bike(
       this.name.value,
       this.description.value,
@@ -54,11 +58,13 @@ export class BikeEditComponent implements OnInit{
       this.imagePath.value
     );
 
-    if (this.onEditMode) this.bikeService.updateBike(this.id, bike);
+    if (this.onEditMode) this.bikeService.updateBike(this.id, bike).subscribe(() => this.isSaving = false);
     else {
       const bikes = this.bikeService.getBikes();
-      this.bikeService.storeBikes(bikes.concat(bike)).subscribe();
+      this.bikeService.storeBikes(bikes.concat(bike)).subscribe(() => this.isSaving = false);
     }
+
+    this.router.navigate(['/']);
    }
 
   get name() {

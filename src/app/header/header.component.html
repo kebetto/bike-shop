@@ -1,11 +1,14 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <!-- <button type="button" class="navbar-toggle" (click)="collapsed = !collapsed"> -->
-      <!-- <span class="icon-bar" *ngFor="let iconBar of [1, 2, 3]"></span> -->
-      <!-- </button> -->
-      <div class="navbar-header" style="background-color: #e7e7e7; margin-left: 30px;">
-        <a style="margin: 0 auto;" routerLink="/" class="navbar-brand">Show Inventory</a>
+      <div
+        class="navbar-header"
+        style="background-color: #e7e7e7; margin-left: 30px;">
+        <a
+          style="margin: 0 auto;"
+          (click) = "onDataFetch()"
+          class="navbar-brand">Show Inventory
+        </a>
       </div>
     </div>
     <!-- <div
@@ -29,7 +32,3 @@
     </div> -->
   </div>
 </nav>
-
-  <!-- <a class="navbar-brand">
-    <img src="../../assets/biker.jpg" width="35" height="35" alt="Bike">
-  </a> -->

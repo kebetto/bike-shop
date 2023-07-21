@@ -1,11 +1,14 @@
 import { Routes } from '@angular/router';
 import { BikeListComponent } from './bike-list/bike-list.component';
+import { AuthComponent } from './auth/auth.component';
+import { AuthGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'bikes', pathMatch: 'full' },
   {
     path: 'bikes',
     component: BikeListComponent,
+    canActivate: [AuthGuard],
     // resolve: [RecipesResolver],
     children: [
       // { path: 'new', component: BikeEditComponent },
@@ -24,8 +27,10 @@ export const routes: Routes = [
         path: ':id/edit',
         loadComponent: () => import('./bike-list/bike-edit/bike-edit.component').then(
           mod => mod.BikeEditComponent)
-      },
+      }
     ]
   },
+  // { path: 'auth', component: AuthComponent },
+  { path: 'auth', component: AuthComponent },
   { path: '**', redirectTo: 'bikes' },
 ];

@@ -1,29 +1,48 @@
-<div class="row">
+<div class="row" *ngIf="isLoading || errorOccurred">
   <div class="col-xs-12">
-    <div class="row">
-      <div class="col-xs-4">
-        <button class="btn btn-default" (click)="onAddBike()">Add New  Bike</button>
+    <div style="text-align: center">
+      <div *ngIf="isLoading; else showErrorMessage">
+        <app-loading-spinner />
       </div>
-      <div
-        class="col-xs-8"
-        style="color: #a94442"
-        *ngIf="errorOccurred">
-        An error occurred while fetching the bikes!
-      </div>
+      <ng-template #showErrorMessage>
+        <div class="alert alert-danger" style="text-align: center;" *ngIf="errorOccurred">
+          An error occurred while fetching or saving the bikes!
+        </div>
+        <!-- <div style="color: #a94442" *ngIf="errorOccurred">
+          An error occurred while fetching or saving the bikes!
+        </div> -->
+      </ng-template>
     </div>
   </div>
 </div>
-<hr>
-<div class="row">
-  <div class="col-md-5" id="bike-list">
-    <h4 class="information">Click on a row to see more details on the right panel !</h4>
-    <app-bike-item
-      *ngFor="let bikeEl of bikes, let currentIndex = index; trackBy: trackByIndex"
-      [bike]="bikeEl"
-      [index]="currentIndex"
-    />
+<div *ngIf="!isLoading && !errorOccurred">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="row">
+        <div class="col-xs-4">
+          <button class="btn btn-default" (click)="onAddBike()">Add New  Bike</button>
+        </div>
+        <!-- <div
+          class="col-xs-8"
+          style="color: #a94442"
+          *ngIf="errorOccurred">
+          An error occurred while fetching the bikes!
+        </div> -->
+      </div>
+    </div>
   </div>
-  <div class="col-md-7">
-    <router-outlet />
+  <hr>
+  <div class="row">
+    <div class="col-md-5" id="bike-list">
+      <h4 class="information">Click on a row to see more details on the right panel !</h4>
+      <app-bike-item
+        *ngFor="let bikeEl of bikes, let currentIndex = index; trackBy: trackByIndex"
+        [bike]="bikeEl"
+        [index]="currentIndex"
+      />
+    </div>
+    <div class="col-md-7">
+      <router-outlet />
+    </div>
   </div>
 </div>

@@ -4,11 +4,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AuthResponseData, AuthService } from './auth.service';
 import { Router } from '@angular/router';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LoadingSpinnerComponent],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
@@ -16,7 +17,7 @@ export class AuthComponent {
 
   isLoginMode = true;
   isLoading = false;
-  error: string = '';
+  error: string | null= '';
 
   constructor(
     private authService: AuthService,
@@ -45,7 +46,7 @@ export class AuthComponent {
       resData => {
         console.log(resData);
         this.isLoading = false;
-        this.router.navigate(['/recipes']);
+        this.router.navigate(['/bikes']);
       },
       errorMessage => {
         console.log(errorMessage);

@@ -14,7 +14,7 @@ export class BikeService {
   private bikes: Bike[] = [];
 
   bikesChanged = new Subject<Bike[]>();
-  errorOccurred = new Subject<HttpErrorResponse>();
+  errorOccurred = new Subject<boolean>();
 
   constructor(private dataService: DataStorageService) { }
 
@@ -38,24 +38,21 @@ export class BikeService {
 
   updateBike(index: number, updatedBike: Bike) {
     this.bikes[index] = updatedBike;
-
-    console.log(this.bikes);
-
-    // this.bikesChanged.next(this.bikes.slice());
-    this.storeBikes(this.bikes).subscribe();
+    return this.storeBikes(this.bikes);
   }
 
   deleteBike(index: number) {
     this.bikes.splice(index, 1);
     this.bikesChanged.next(this.bikes.slice());
+    this.storeBikes(this.bikes).subscribe();
   }
 
   fetchBikes(): Observable<Bike[]>{
     return this.dataService.fetchBikes()
       .pipe(
         tap(bikes => this.setBikes(bikes)),
-        catchError(error => {
-        this.errorOccurred.next(error);
+        catchError(() => {
+        this.errorOccurred.next(true);
         return EMPTY;
       }));
   }
@@ -65,7 +62,7 @@ export class BikeService {
       .pipe(
         tap(bikes => this.setBikes(bikes)),
         catchError(error => {
-        this.errorOccurred.next(error);
+        this.errorOccurred.next(true);
         return EMPTY;
       }));
   }
