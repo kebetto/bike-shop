@@ -5,7 +5,7 @@
         <app-loading-spinner />
       </div>
       <div *ngIf="error" class="alert alert-danger" style="text-align: center;">
-        Un error occurred while logging in
+        {{ error }}
       </div>
     </div>
 
@@ -16,7 +16,7 @@
           type="email"
           id="email"
           class="form-control"
-          ngModel
+          ngModel="hacker@hacker.com"
           name="email"
           required
           email
@@ -28,19 +28,20 @@
           <div *ngIf="email.errors?.['email']">Please enter a valid email</div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group password-container">
         <label for="password">Password</label>
         <input
-          type="password"
+          [attr.type]="isHidden ? 'password' : 'text'"
           id="password"
           class="form-control"
-          ngModel
+          ngModel="weakpassword"
           name="password"
           required
           minlength="6"
           #password="ngModel"
           (focus)="error = null"
         />
+        <i class="fa-solid fa-eye" id="eye" [class.fa-eye-slash]="isHidden" (click)="onToggle()"></i>
         <div *ngIf="password.touched && password.invalid" class="alert alert-danger">
           <div *ngIf="password.errors?.['required']">Password is required</div>
           <div *ngIf="password.errors?.['minlength']">Password should be longer than 6 chars</div>

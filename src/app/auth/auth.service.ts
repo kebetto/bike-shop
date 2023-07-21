@@ -25,30 +25,6 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  signup(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key='
-         + environment.firebaseAPIkey,
-        {
-          email: email,
-          password: password,
-          returnSecureToken: true
-        }
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
-  }
-
   login(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
@@ -112,6 +88,7 @@ export class AuthService {
   }
 
   autoLogout(expirationDuration: number) {
+    // Set expirationDuration to 1000 millisecons to test auto logout
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
     }, expirationDuration);
@@ -143,7 +120,7 @@ export class AuthService {
         errorMessage = 'This email does not exist.';
         break;
       case 'INVALID_PASSWORD':
-        errorMessage = 'This password is not correct.';
+        errorMessage = `The credentials entered don't match our records.`;
         break;
     }
     return throwError(errorMessage);

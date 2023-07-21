@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { BikeListComponent } from './bike-list/bike-list.component';
 import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './auth/auth.guard';
+import { canDeactivateGuard } from './bike-list/bike-edit/can-deactivate.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'bikes', pathMatch: 'full' },
@@ -26,7 +27,8 @@ export const routes: Routes = [
       {
         path: ':id/edit',
         loadComponent: () => import('./bike-list/bike-edit/bike-edit.component').then(
-          mod => mod.BikeEditComponent)
+          mod => mod.BikeEditComponent),
+          canDeactivate: [canDeactivateGuard]
       }
     ]
   },

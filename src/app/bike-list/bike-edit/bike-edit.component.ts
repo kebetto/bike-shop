@@ -20,6 +20,7 @@ export class BikeEditComponent implements OnInit{
   id! : number;
   onEditMode = false;
   isSaving = false;
+  changesSaved = false;
 
   constructor(private bikeService: BikeService, private router: Router, private route: ActivatedRoute){}
 
@@ -33,6 +34,7 @@ export class BikeEditComponent implements OnInit{
     });
 
     this.route.params.subscribe((params: Params) => {
+      // casting the string to a number, since getBikes expect a number
       this.id = +params['id'];
       this.bike = this.bikeService.getBike(this.id);
 
@@ -58,14 +60,29 @@ export class BikeEditComponent implements OnInit{
       this.imagePath.value
     );
 
-    if (this.onEditMode) this.bikeService.updateBike(this.id, bike).subscribe(() => this.isSaving = false);
+    if (this.onEditMode) {
+      this.bikeService.updateBike(this.id, bike).subscribe(() => this.isSaving = false);
+      this.changesSaved = true;
+    }
     else {
       const bikes = this.bikeService.getBikes();
       this.bikeService.storeBikes(bikes.concat(bike)).subscribe(() => this.isSaving = false);
     }
 
-    this.router.navigate(['/']);
-   }
+      this.router.navigate(['/']);
+  }
+
+  canDeactivate(){
+    if ((this.bike.name !== this.name.value
+      || this.bike.description !== this.description.value
+      || this.bike.price !== this.price.value
+      || this.bike.imagePath !== this.imagePath.value
+      || this.bike.quantity !== this.quantity.value)
+      && !this.changesSaved && this.bikeForm.valid){
+        return confirm('Do you want to discard the changes?');
+    }
+    else return true;
+  }
 
   get name() {
     return this.bikeForm.get('name')!;

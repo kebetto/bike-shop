@@ -1,7 +1,15 @@
-a{
+.navbar-right{
   cursor: pointer !important;
 }
+
 ul.navmr-auto{
    margin-right: 10% !important;
 }
 
+.enabled{
+  cursor: pointer !important;
+}
+
+.navbar-brand{
+  margin: 0 auto;
+}

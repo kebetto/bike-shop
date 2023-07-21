@@ -2,3 +2,27 @@
   background-color: #777;
   border-color: #777 !important;
 }
+
+.password-container{
+  position: relative;
+}
+.password-container input[type="password"],
+.password-container input[type="text"]{
+  width: 100%;
+  padding: 12px 36px 12px 12px;
+  box-sizing: border-box;
+}
+.fa-eye{
+  position: absolute;
+  top: 35px;
+  right: 4%;
+  cursor: pointer;
+  color: lightgray;
+}
+/* .fa-eye{
+  position: absolute;
+  top: 60%;
+  right: 4%;
+  cursor: pointer;
+  color: lightgray;
+} */

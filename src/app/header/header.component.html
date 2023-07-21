@@ -1,34 +1,20 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <div
-        class="navbar-header"
-        style="background-color: #e7e7e7; margin-left: 30px;">
+      <div class="navbar-header" style="background-color: #e7e7e7; margin-left: 30px;">
         <a
           style="margin: 0 auto;"
-          (click) = "onDataFetch()"
-          class="navbar-brand">Show Inventory
+          [ngClass] = "{enabled: isAuthenticated}"
+          class="navbar-brand"
+          (click) = "onDataFetch()">
+          {{ isAuthenticated ? "Show Inventory" : "The Bike Shop" }}
         </a>
       </div>
+
+      <div class="navbar-right" style="position: absolute; right: 30px">
+        <a *ngIf="isAuthenticated" (click) = "onLogout()" class="navbar-brand">Logout</a>
+      </div>
     </div>
-    <!-- <div
-      class="navbar-collapse"
-      [class.collapse]="collapsed"
-      (window:resize)="collapsed = true">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown" appDropdown>
-          <a
-            style="cursor: pointer;"
-            class="dropdown-toggle"
-            role="button">Manage
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a style="cursor: pointer;" (click)="onDataSave()">Save Data</a></li>
-            <li><a style="cursor: pointer;" (click)="onDataFetch()">Fetch Data</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div> -->
   </div>
 </nav>
+

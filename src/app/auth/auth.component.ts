@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+
 import { AuthResponseData, AuthService } from './auth.service';
-import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 @Component({
@@ -13,17 +15,22 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent {
+export class AuthComponent implements OnDestroy, OnInit{
 
   isLoginMode = true;
   isLoading = false;
-  error: string | null= '';
+  isHidden = true;
+  error: string | null = '';
+  subscription! : Subscription;
+  returnUrl!: string;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-  ) {}
+  constructor(private authService: AuthService, private router: Router,private route: ActivatedRoute) {}
 
+  ngOnInit(): void {
+    this.route.params.subscribe((params: Params) => {
+      this.returnUrl = params['returnUrl'];
+    });
+  }
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
@@ -32,31 +39,29 @@ export class AuthComponent {
     const email = form.value.email;
     const password = form.value.password;
 
-    let authObs: Observable<AuthResponseData>;
-
     this.isLoading = true;
 
-    if (this.isLoginMode) {
-      authObs = this.authService.login(email, password);
-    } else {
-      authObs = this.authService.signup(email, password);
-    }
-
-    authObs.subscribe(
-      resData => {
-        console.log(resData);
-        this.isLoading = false;
-        this.router.navigate(['/bikes']);
-      },
-      errorMessage => {
-        console.log(errorMessage);
-        this.error = errorMessage;
-        // this.showErrorAlert(errorMessage);
-        this.isLoading = false;
-      }
-    );
+    this.subscription = this.authService.login(email, password)
+      .subscribe(
+        resData => {
+          // console.log(resData);
+          this.isLoading = false;
+          this.router.navigate(['/bikes']);
+        },
+        errorMessage => {
+          this.error = errorMessage;
+          this.isLoading = false;
+        }
+      );
 
     form.reset();
   }
 
+  onToggle(){
+    this.isHidden = !this.isHidden;
+  }
+
+  ngOnDestroy(): void {
+      this.subscription.unsubscribe();
+  }
 }

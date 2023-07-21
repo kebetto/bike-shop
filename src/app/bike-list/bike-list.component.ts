@@ -36,8 +36,6 @@ export class BikeListComponent implements OnInit, OnDestroy{
     this.isLoading = true;
     this.errorOccurred = false;
 
-  console.log("Inside List component...")
-
     this.bikeService.fetchBikes()
       .pipe(takeUntil(this.destroy$))
       .subscribe((bikes: Bike[]) => {
@@ -49,7 +47,6 @@ export class BikeListComponent implements OnInit, OnDestroy{
       .subscribe((status) => {
         this.errorOccurred = status;
         this.isLoading = false;
-        // setTimeout(() => this.errorOccurred = false, 5000);
       }
     );
 
