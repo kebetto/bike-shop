@@ -1,5 +1,5 @@
 .btn-primary{
-  background-color: #777;
+  background-color: #777 !important;
   border-color: #777 !important;
 }
 
@@ -19,10 +19,3 @@
   cursor: pointer;
   color: lightgray;
 }
-/* .fa-eye{
-  position: absolute;
-  top: 60%;
-  right: 4%;
-  cursor: pointer;
-  color: lightgray;
-} */

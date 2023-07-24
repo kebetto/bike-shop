@@ -15,7 +15,7 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  collapsed = true;
+  // Will be used for displaying or hiding  the 'Logout' button
   isAuthenticated = false;
 
   destroy$ = new Subject<void>();
@@ -45,6 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void{
+    // Unsubscribe from Observable to avoid memory leaks
     this.destroy$.next();
     this.destroy$.complete();
   }

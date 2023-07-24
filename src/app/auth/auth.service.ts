@@ -38,6 +38,7 @@ export class AuthService {
       )
       .pipe(
         catchError(this.handleError),
+        // save user data to localStorage and set the session timeout timer
         tap(resData => {
           this.handleAuthentication(
             resData.email,
@@ -78,6 +79,7 @@ export class AuthService {
   }
 
   logout() {
+
     this.user.next(null);
     this.router.navigate(['/auth']);
     localStorage.removeItem('userData');
@@ -88,34 +90,37 @@ export class AuthService {
   }
 
   autoLogout(expirationDuration: number) {
-    // Set expirationDuration to 1000 millisecons to test auto logout
+    // Set expirationDuration to 10000 millisecons to test auto logout
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
     }, expirationDuration);
   }
 
+  // Save user data to localStorage and set the session timeout timer.
   private handleAuthentication(
     email: string,
     userId: string,
     token: string,
     expiresIn: number
   ) {
+    // Set the expiration time by adding the session timeout (expiesIn in seconds) to the current date.
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
+    // Dispatch a "new user" event
     this.user.next(user);
+    // Yhe will expires in 'expiresIn * 1000' milliseconds and we will be redirected to the login page.
     this.autoLogout(expiresIn * 1000);
+    // Persist the user data to localStorage to make it available thru multiple app loads
     localStorage.setItem('userData', JSON.stringify(user));
   }
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (!errorRes.error || !errorRes.error.error) {
-      return throwError(errorMessage);
+    return throwError(errorMessage);
+      // return throwError(() => new Error(errorMessage));
     }
     switch (errorRes.error.error.message) {
-      case 'EMAIL_EXISTS':
-        errorMessage = 'This email exists already';
-        break;
       case 'EMAIL_NOT_FOUND':
         errorMessage = 'This email does not exist.';
         break;
@@ -124,5 +129,6 @@ export class AuthService {
         break;
     }
     return throwError(errorMessage);
+    // return throwError(() => new Error(errorMessage));
   }
 }

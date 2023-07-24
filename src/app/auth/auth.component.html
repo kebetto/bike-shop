@@ -51,9 +51,16 @@
         <button
           class="btn btn-primary"
           type="submit"
-          [disabled]="!authForm.valid"
-        >
+          [disabled]="!authForm.valid">
           Login
+        </button>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="!password.value && !email.value"
+          style="margin-left: 10px;"
+          (click)="authForm.reset()">
+          Reset
         </button>
       </div>
     </form>

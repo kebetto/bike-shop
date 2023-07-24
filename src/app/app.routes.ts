@@ -16,6 +16,7 @@ export const routes: Routes = [
       // { path: ':id', component: BikeDetailComponent },
       {
         path: 'new',
+        // lazy load component
         loadComponent: () => import('./bike-list/bike-edit/bike-edit.component').then(
           mod => mod.BikeEditComponent)
       },
@@ -32,7 +33,6 @@ export const routes: Routes = [
       }
     ]
   },
-  // { path: 'auth', component: AuthComponent },
   { path: 'auth', component: AuthComponent },
   { path: '**', redirectTo: 'bikes' },
 ];

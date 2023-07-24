@@ -27,7 +27,8 @@ export class AuthComponent implements OnDestroy, OnInit{
   constructor(private authService: AuthService, private router: Router,private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
+    // Not really need here, but just for demo purposes
+    this.route.queryParams.subscribe((params: Params) => {
       this.returnUrl = params['returnUrl'];
     });
   }
@@ -44,12 +45,13 @@ export class AuthComponent implements OnDestroy, OnInit{
     this.subscription = this.authService.login(email, password)
       .subscribe(
         resData => {
-          // console.log(resData);
           this.isLoading = false;
           this.router.navigate(['/bikes']);
         },
         errorMessage => {
           this.error = errorMessage;
+
+          console.log(this.error)
           this.isLoading = false;
         }
       );
@@ -62,6 +64,6 @@ export class AuthComponent implements OnDestroy, OnInit{
   }
 
   ngOnDestroy(): void {
-      this.subscription.unsubscribe();
+    if (this.subscription) this.subscription.unsubscribe();
   }
 }

@@ -32,12 +32,17 @@ export class BikeDetailComponent implements OnInit {
   }
 
   onEdit(){
+    // Load BikeEditComponent
     this.router.navigate(['/bikes', this.id, 'edit']);
   }
 
   onDelete(){
+    // Display confirmation popup, to prevent user from inadvertently deleting a bike
     const proceed = confirm("Do you want to permanently delete this item");
-    if (proceed) this.bikeService.deleteBike(this.id);
+    if (proceed) {
+      this.bikeService.deleteBike(this.id);
+      this.router.navigate(['/bikes']);
+    }
     else return;
   }
 }

@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
 })
 export class BikeItemComponent implements OnInit{
 
-  @Input() bike!: Bike;
+  @Input() bike! : Bike;
   @Input() index!: number;
 
   ngOnInit(): void {}

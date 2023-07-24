@@ -33,7 +33,7 @@ export class BikeService {
 
   addBike(bike: Bike) {
     this.bikes.push(bike);
-    this.bikesChanged.next(this.bikes.slice());
+    return this.storeBikes(this.bikes);
   }
 
   updateBike(index: number, updatedBike: Bike) {

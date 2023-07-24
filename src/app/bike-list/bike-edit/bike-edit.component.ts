@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Bike } from '../bike.model';
-import { DataStorageService } from 'src/app/services/data-storage.service';
 import { BikeService } from 'src/app/services/bike.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { LoadingSpinnerComponent } from 'src/app/loading-spinner/loading-spinner.component';
@@ -34,11 +33,16 @@ export class BikeEditComponent implements OnInit{
     });
 
     this.route.params.subscribe((params: Params) => {
-      // casting the string to a number, since getBikes expect a number
+      // casting the string to a number, since the 'getBikes' method expects a number
       this.id = +params['id'];
+      // get the bike to load by its index
       this.bike = this.bikeService.getBike(this.id);
-
+      /* Since this same component is used for editing or adding a new bike, this child route may not contain the 'id' param,
+         but only the 'new' route param, when it gets loaded from the 'BikeListComponent'.
+         The form gets prefilled with the Bike data only in edit mode; it would remain empty otherwise.
+      */
       if (this.bike){
+        // Fill the form with the Bike data
         this.bikeForm.setValue(this.bike);
         this.onEditMode = true;
       }
@@ -46,12 +50,14 @@ export class BikeEditComponent implements OnInit{
    }
 
    onCancel(){
+    // Cancel editing and navigate back to 'BikeListComponent' component.
     this.router.navigate(['/bikes']);
    }
 
    onSubmit(){
     this.isSaving = true;
 
+    // create a new Bike object from form data
     const bike = new Bike(
       this.name.value,
       this.description.value,
@@ -60,19 +66,22 @@ export class BikeEditComponent implements OnInit{
       this.imagePath.value
     );
 
+    // update bike
     if (this.onEditMode) {
       this.bikeService.updateBike(this.id, bike).subscribe(() => this.isSaving = false);
       this.changesSaved = true;
     }
+    // add bike
     else {
-      const bikes = this.bikeService.getBikes();
-      this.bikeService.storeBikes(bikes.concat(bike)).subscribe(() => this.isSaving = false);
+      this.bikeService.addBike(bike).subscribe(() => this.isSaving = false);
+      this.changesSaved = true;
     }
 
-      this.router.navigate(['/']);
+    this.router.navigate(['/bikes']);
   }
 
   canDeactivate(){
+    // Display confirmation popup, when navigating away with unsaved changes on edit mode
     if ((this.bike.name !== this.name.value
       || this.bike.description !== this.description.value
       || this.bike.price !== this.price.value
@@ -81,6 +90,7 @@ export class BikeEditComponent implements OnInit{
       && !this.changesSaved && this.bikeForm.valid){
         return confirm('Do you want to discard the changes?');
     }
+    // proceed to route
     else return true;
   }
 

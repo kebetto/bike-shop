@@ -2,11 +2,11 @@
   style="cursor: pointer; margin-bottom: -1px;"
   routerLinkActive="active"
   [routerLink]="['/bikes', index]"
-  [skipLocationChange]= "true"
   class="list-group-item clearfix">
   <div class="pull-left">
     <h4 class="list-group-item-heading">{{ bike.name }}</h4>
     <p class="list-group-item-text">{{ bike.price | currency }}</p>
+    <p class="list-group-item-text">Rating: {{ bike.rating ? bike.rating :'New' }}</p>
   </div>
   <span class="pull-right">
     <img
