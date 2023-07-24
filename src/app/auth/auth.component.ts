@@ -50,8 +50,6 @@ export class AuthComponent implements OnDestroy, OnInit{
         },
         errorMessage => {
           this.error = errorMessage;
-
-          console.log(this.error)
           this.isLoading = false;
         }
       );

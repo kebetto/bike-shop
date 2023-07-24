@@ -54,17 +54,19 @@ export class BikeService {
         catchError(() => {
         this.errorOccurred.next(true);
         return EMPTY;
-      }));
+      })
+    );
   }
 
   storeBikes(bikes: Bike[]): Observable<Bike[]>{
     return this.dataService.storeBikes(bikes)
       .pipe(
         tap(bikes => this.setBikes(bikes)),
-        catchError(error => {
+        catchError(() => {
         this.errorOccurred.next(true);
         return EMPTY;
-      }));
+      })
+    );
   }
 }
 

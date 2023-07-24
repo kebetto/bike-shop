@@ -20,7 +20,7 @@ export class AuthGuard {
 
     const user = localStorage.getItem('userData');
     // Check whether the session is still valid or not.
-    // The session will be still valid if user data is still stoted in localStorage
+    // The session will be still valid if user data is still stored in localStorage
     if (user) {
       this.authService.user.next(JSON.parse(user));
       return true;
