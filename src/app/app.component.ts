@@ -19,6 +19,7 @@ export class AppComponent implements OnInit{
   title = 'The Bike Shop';
 
   ngOnInit(): void {
-      this.authService.autoLogin();
+      // this.authService.autoLogin();
+      console.log("Removing the Auto Login");
   }
 }
