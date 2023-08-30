@@ -20,5 +20,6 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
       // this.authService.autoLogin();
+      console.log("Removing the Auto Login");
   }
 }
